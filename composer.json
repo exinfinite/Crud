@@ -1,0 +1,23 @@
+{
+	"name": "exinfinite/crud",
+	"description": "doctring dbal crud",
+	"version": "1.0.1",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Exinfinite Chen",
+			"email": "chen.min.home@gmail.com",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Exinfinite\\": "src/"
+		}
+	},
+	"require": {
+		"php": "^5.6",
+		"doctrine/dbal": "^2.5"
+	}
+}
