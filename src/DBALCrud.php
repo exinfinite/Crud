@@ -60,12 +60,12 @@ class DBALCrud {
         $uids = (array) $uid;
         $stmt = $qb->update($table);
         foreach (array_keys($datas) as $idx => $pt) {
-            $stmt->set($pt, '?');
-            $stmt->setParameter($idx, $datas[$pt]);
+            $stmt->set($pt, ":{$pt}");
+            $stmt->setParameter($pt, $datas[$pt]);
         }
         return $stmt->andWhere(
-            $qb->expr()->in($uid_col, $uids)
-        );
+            $qb->expr()->in($uid_col, ':uids')
+        )->setParameter('uids', $uids, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY);
     }
     function update($table, Array $datas, $uid, $uid_col) {
         return $this->updateStmt($table, $datas, $uid, $uid_col)->execute();
@@ -74,8 +74,8 @@ class DBALCrud {
         $qb = $this->queryBuilder();
         $uids = (array) $uid;
         return $qb->delete($table)->andWhere(
-            $qb->expr()->in($uid_col, $uids)
-        );
+            $qb->expr()->in($uid_col, ':uids')
+        )->setParameter('uids', $uids, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY);
     }
     function delete($table, $uid, $uid_col) {
         return $this->deleteStmt($table, $uid, $uid_col)->execute();
