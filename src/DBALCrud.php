@@ -95,7 +95,7 @@ class DBALCrud {
         } catch (Exception $e) {
             $this->conn->rollback();
             if (!is_null($exception)) {
-                return call_user_func($call, $e);
+                return call_user_func($exception, $e);
             }
         }
     }
