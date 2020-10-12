@@ -80,11 +80,16 @@ class DBALCrud {
     function delete($table, $uid, $uid_col) {
         return $this->deleteStmt($table, $uid, $uid_col)->execute();
     }
-    function callProcStmt($procedure) {
+    function callProcStmt($procedure, ...$params) {
+        $num = count($params);
+        if ($num > 0) {
+            $hold = implode(", ", array_fill(0, $num, '?'));
+            return $this->conn->executeQuery("Call {$procedure}({$hold})", $params);
+        }
         return $this->conn->executeQuery("Call {$procedure}");
     }
-    function callProc($procedure) {
-        return $this->callProcStmt($procedure)->fetchAll();
+    function callProc($procedure, ...$params) {
+        return $this->callProcStmt($procedure, ...$params)->fetchAll();
     }
     function transaction(callable $call, callable $exception = null) {
         $this->conn->beginTransaction();
